@@ -3,12 +3,12 @@
   flex-wrap: wrap;
   max-width: 300px;
   min-width: 200px;
-  /* height: 500px; */
+  height: 500px;
+
   /* min-width: 200px; */
   margin: 0 auto;
   box-shadow: 0 0 20px 0px rgb(150, 150, 150);
   border-radius: 1rem;
-  overflow: hidden;
 }
 
 .card__head {
@@ -18,6 +18,7 @@
 .card__img {
   width: 100%;
   aspect-ratio: 4/3;
+  border-radius: 1rem;
   object-fit: cover;
   object-position: center;
 }
@@ -28,7 +29,6 @@
 
 .card__body > * {
   margin: 0.5rem 0;
-  text-overflow: clip;
 }
 
 .card__title {
@@ -37,6 +37,10 @@
 
 .card__text {
   font-size: 0.8rem;
+  max-width: 100%;
+  height: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .banners {
@@ -50,21 +54,44 @@
 .tag_banner {
   line-height: 2em;
   padding: 0 0.5em;
+  margin-bottom: 0.5rem;
   border-radius: 0.4em;
-}
-
-.html {
-  background-color: paleturquoise;
-}
-
-.php {
-  background-color: aquamarine;
-}
-
-.css {
   box-shadow: 0 0 0.8em -0.3em rgba(0, 0, 0, 0.5);
 }
 
-.js {
-  background-color: greenyellow;
+.dolci {
+  background-color: #ffadad;
+}
+
+.antipasti {
+  background-color: #ffd6a5;
+}
+
+.ricette_vegetariane {
+  background-color: #fffffc;
+  box-shadow: 0 0 0.8em -0.3em rgba(0, 0, 0, 0.5);
+}
+
+.torte {
+  background-color: #fdffb6;
+}
+
+.primi_piatti {
+  background-color: #caffbf;
+}
+
+.dolci_veloci {
+  background-color: #9bf6ff;
+}
+
+.ricette_veloci {
+  background-color: #a0c4ff;
+}
+
+.dolci_al_cioccolato {
+  background-color: #bdb2ff;
+}
+
+.ricette_al_forno {
+  background-color: #ffc6ff;
 }

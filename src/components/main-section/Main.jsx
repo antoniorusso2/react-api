@@ -1,7 +1,6 @@
 import Card from '../card/Card.jsx';
 import Form from '../form/Form.jsx';
 import style from './main.module.css';
-import { posts } from '../../data/posts.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -9,18 +8,34 @@ export const BASE_URI = 'http://localhost:3000/';
 
 function Main() {
   // const [titleInput, setTitleInput] = useState('');
-  const [publishedPosts, setPublishedPosts] = useState(posts.filter((post) => post.published));
+  const [publishedPosts, setPublishedPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [addedList, setAddedList] = useState([]);
+  const [tags, setTags] = useState([]);
 
-  //id da inserire ad ogni elemento aggiunto
-  let lastId = publishedPosts.length;
+  //aggiunta tags
+  useEffect(() => {
+    setPublishedPosts(posts.filter((post) => post.published));
+
+    const newTags = [];
+
+    posts.forEach((post) => {
+      const postTags = post.tags;
+
+      postTags.forEach((tag) => {
+        !newTags.includes(tag) && newTags.push(tag);
+      });
+    });
+
+    setTags(newTags);
+  }, [posts]);
 
   //fetch API
   function fetchPosts() {
     axios
       .get(`${BASE_URI}posts`)
       .then((res) => {
-        setPublishedPosts(res.data);
+        setPosts(res.data);
       })
       .catch((err) => console.error(err));
   }
@@ -33,12 +48,15 @@ function Main() {
     fetchPosts();
   }, []);
 
+  //id da inserire ad ogni elemento aggiunto
+  let lastId = publishedPosts.length;
+
   function addNewElement(newElement) {
     console.log('render addNewElement');
 
     newElement.id = lastId + 1;
 
-    setPublishedPosts([...publishedPosts, newElement]);
+    setPosts([...posts, newElement]);
     setAddedList([...addedList, newElement]);
 
     addPost(newElement);
@@ -52,7 +70,6 @@ function Main() {
     setAddedList(addedList.filter((post) => post.id !== id));
   }
 
-  // console.log(titleInput);
   return (
     <main className={style.main}>
       <div className="container">
@@ -96,7 +113,7 @@ function Main() {
         <section className="published_posts">
           <div className="row">
             {publishedPosts.map((post) => {
-              return <Card key={post.id} item={post} />;
+              return <Card key={post.id} tags={tags} item={post} />;
             })}
           </div>
         </section>

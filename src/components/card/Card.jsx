@@ -6,8 +6,10 @@ import { BASE_URI } from '../main-section/Main.jsx';
 
 function Card({ item }) {
   const { title, image, content, tags } = item;
-  console.log(image);
-  console.log(tags);
+
+  function formatTags(tag) {
+    return tag.toLowerCase().replaceAll(' ', '_');
+  }
 
   return (
     <div className="col-4">
@@ -20,7 +22,7 @@ function Card({ item }) {
               {Array.isArray(tags) &&
                 tags.map((tag, index) => {
                   return (
-                    <li className={`${Style.tag_banner} ${Style[`${tag}`]}`} key={index}>
+                    <li className={`${Style.tag_banner} ${Style[`${formatTags(tag)}`]}`} key={index}>
                       {tag}
                     </li>
                   );

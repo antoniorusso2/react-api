@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import style from './Form.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const defaultFormData = {
   title: '',
