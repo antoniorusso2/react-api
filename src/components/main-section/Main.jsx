@@ -5,6 +5,8 @@ import { posts } from '../../data/posts.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+export const BASE_URI = 'http://localhost:3000/';
+
 function Main() {
   // const [titleInput, setTitleInput] = useState('');
   const [publishedPosts, setPublishedPosts] = useState(posts.filter((post) => post.published));
@@ -15,7 +17,6 @@ function Main() {
   let lastId = publishedPosts.length;
 
   //fetch API
-  const BASE_URI = 'http://localhost:3000/';
 
   function fetchPosts() {
     axios
