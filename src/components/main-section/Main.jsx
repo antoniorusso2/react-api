@@ -6,29 +6,21 @@ import axios from 'axios';
 
 export const BASE_URI = 'http://localhost:3000/';
 
+const defaultFormData = {
+  title: '',
+  image: undefined /* compila questo campo */,
+  content: '',
+  published: true,
+  tags: '',
+};
+
 function Main() {
   // const [titleInput, setTitleInput] = useState('');
   const [publishedPosts, setPublishedPosts] = useState([]);
   const [posts, setPosts] = useState([]);
   const [addedList, setAddedList] = useState([]);
   const [tags, setTags] = useState([]);
-
-  //aggiunta tags
-  useEffect(() => {
-    setPublishedPosts(posts.filter((post) => post.published));
-
-    const newTags = [];
-
-    posts.forEach((post) => {
-      const postTags = post.tags;
-
-      postTags.forEach((tag) => {
-        !newTags.includes(tag) && newTags.push(tag);
-      });
-    });
-
-    setTags(newTags);
-  }, [posts]);
+  const [formData, setFormData] = useState(defaultFormData);
 
   //fetch API
   function fetchPosts() {
@@ -40,26 +32,72 @@ function Main() {
       .catch((err) => console.error(err));
   }
 
+  //aggiunta tags
+  useEffect(() => {
+    setPublishedPosts(posts.filter((post) => post.published));
+
+    const newTags = [];
+
+    posts.forEach((post) => {
+      const postTags = post.tags;
+
+      Array.isArray(postTags) &&
+        postTags.forEach((tag) => {
+          !newTags.includes(tag) && newTags.push(tag);
+        });
+    });
+
+    setTags(newTags);
+  }, [posts]);
+
+  function handleFormData(e) {
+    console.log('parte il form handler');
+
+    const key = e.target.name;
+    console.log(key);
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    console.log(value);
+
+    const newData = {
+      id: Date.now(),
+      ...formData,
+      [key]: value,
+    };
+
+    console.log(formData.tags, e.target);
+    // console.log(tags);
+
+    setFormData(newData);
+  }
+
   function addPost(post) {
-    axios.post(`${BASE_URI}posts`, post);
+    axios
+      .post(`${BASE_URI}posts`, post.json())
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   }
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  //id da inserire ad ogni elemento aggiunto
-  let lastId = publishedPosts.length;
-
-  function addNewElement(newElement) {
+  function addNewElement(e) {
     console.log('render addNewElement');
+    e.preventDefault();
 
-    newElement.id = lastId + 1;
+    const post = {
+      id: Date.now(),
+      ...formData,
+      tags: formData.tags.split(',').map((tag) => tag.trim()),
+    };
+    setFormData(post);
+    setPosts([...posts, post]);
+    setAddedList([...addedList, post]);
 
-    setPosts([...posts, newElement]);
-    setAddedList([...addedList, newElement]);
+    addPost(post);
+    setFormData(defaultFormData);
 
-    addPost(newElement);
+    console.log(post);
   }
 
   function deletePost(id) {
@@ -89,7 +127,57 @@ function Main() {
                   sci il nuovo titolo" value={inputData} />
                 </form> */}
 
-                <Form add={addNewElement} />
+                {/* <Form tags={tags} add={addNewElement} /> */}
+
+                <form onSubmit={addNewElement} className={style.form}>
+                  <h3>Aggiungi un nuovo post</h3>
+
+                  <input onChange={handleFormData} className={style.input} name="title" type="text" placeholder="Inserisci il nuovo titolo" value={formData.title} />
+
+                  <input onChange={handleFormData} className={style.input} name="image" type="text" placeholder="Inserisci un immagine" />
+
+                  <label htmlFor="category">
+                    scegli una categoria:
+                    <select onChange={handleFormData} value={formData.category} className={style.category} name="category">
+                      <option value="frontend">Frontend</option>
+                      <option value="backend">Backend</option>
+                      <option value="news">News</option>
+                      <option value="plans">Plans</option>
+                    </select>
+                  </label>
+
+                  <textarea className={style.textarea} onChange={handleFormData} name="content" type="text-area" placeholder="Inserisci il contenuto" value={formData.content} />
+
+                  <div className={style.tags_checkbox}>
+                    <label onChange={handleFormData} key={Date.now() + 1} htmlFor="tags">
+                      <span>Scrivi i tag per l&apos; articolo</span>
+                    </label>
+                    <input className={style.input} name="tags" type="text" onChange={handleFormData} value={formData.tags} />
+
+                    {/* <label htmlFor="html">Html</label>
+        <input onChange={handleFormData} className={style.input} name="html" type="checkbox" />
+
+        <label htmlFor="css">Css</label>
+        <input onChange={handleFormData} className={style.input} name="css" type="checkbox" />
+
+        <label htmlFor="js">Javascript</label>
+        <input onChange={handleFormData} className={style.input} name="js" type="checkbox" />
+
+        <label htmlFor="php">Php</label>
+        <input onChange={handleFormData} className={style.input} name="php" type="checkbox" /> */}
+                  </div>
+                  <div className="btn_wrap">
+                    <button
+                      onClick={() => {
+                        // addPost();
+                        // emptyForm();
+                      }}
+                      className={style.add_btn}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </form>
                 <ul className={style.added_list}>
                   {addedList &&
                     addedList.map((el) => (

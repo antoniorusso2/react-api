@@ -1,57 +1,67 @@
 /* eslint-disable react/prop-types */
 import style from './Form.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BASE_URI } from '../main-section/Main';
 
 const defaultFormData = {
   title: '',
   image: undefined /* compila questo campo */,
   content: '',
   published: true,
+  tags: '',
 };
 
 export default function Form({ add }) {
   const [formData, setFormData] = useState(defaultFormData);
-  // const [tags, setTags] = useState([]);
 
   function handleFormData(e) {
     console.log('parte il form handler');
 
     const key = e.target.name;
+    console.log(key);
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
-    // const checkbox = e.target;
-
-    // add tags
-    // checkbox.checked ? setTags([...tags, checkbox.name]) : setTags(tags.filter((tag) => tag !== checkbox.name));
-
-    // console.log(tags);
+    console.log(value);
 
     const newData = {
+      id: Date.now(),
       ...formData,
       [key]: value,
     };
 
-    console.log(newData);
+    console.log(formData.tags, e.target);
+    // console.log(tags);
 
     setFormData(newData);
+  }
+
+  function addPost(e) {
+    e.preventDefault();
+    console.log('add post');
+
+    const post = {
+      id: Date.now(),
+      ...formData,
+      tags: formData.tags.split(',').map((tag) => tag.trim()),
+    };
+    setFormData(post);
+
+    console.log(formData.tags, post);
+
+    axios
+      .post(`${BASE_URI}posts`, post)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
+
+    setFormData(defaultFormData);
   }
 
   function emptyForm() {
     setFormData(defaultFormData);
   }
 
-  //controllo presenza tags in base ai checkbox
-  // useEffect(
-  //   () =>
-  //     setFormData({
-  //       ...formData,
-  //       // tags: tags,
-  //     }),
-  //   [],
-  // );
-
   return (
-    <form onSubmit={(e) => e.preventDefault()} className={style.form}>
+    <form onSubmit={(e) => addPost(e, formData)} className={style.form}>
       <h3>Aggiungi un nuovo post</h3>
 
       <input onChange={handleFormData} className={style.input} name="title" type="text" placeholder="Inserisci il nuovo titolo" value={formData.title} />
@@ -71,7 +81,12 @@ export default function Form({ add }) {
       <textarea className={style.textarea} onChange={handleFormData} name="content" type="text-area" placeholder="Inserisci il contenuto" value={formData.content} />
 
       <div className={style.tags_checkbox}>
-        <label htmlFor="html">Html</label>
+        <label onChange={handleFormData} key={Date.now() + 1} htmlFor="tags">
+          <span>Scrivi i tag per l&apos; articolo</span>
+        </label>
+        <input className={style.input} name="tags" type="text" onChange={handleFormData} value={formData.tags} />
+
+        {/* <label htmlFor="html">Html</label>
         <input onChange={handleFormData} className={style.input} name="html" type="checkbox" />
 
         <label htmlFor="css">Css</label>
@@ -81,13 +96,13 @@ export default function Form({ add }) {
         <input onChange={handleFormData} className={style.input} name="js" type="checkbox" />
 
         <label htmlFor="php">Php</label>
-        <input onChange={handleFormData} className={style.input} name="php" type="checkbox" />
+        <input onChange={handleFormData} className={style.input} name="php" type="checkbox" /> */}
       </div>
       <div className="btn_wrap">
         <button
           onClick={() => {
-            add(formData);
-            emptyForm();
+            addPost();
+            // emptyForm();
           }}
           className={style.add_btn}
         >

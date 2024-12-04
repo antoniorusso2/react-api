@@ -24,9 +24,11 @@
 .tags_checkbox {
   display: flex;
   gap: 1rem;
-
+  width: 100%;
+  flex-wrap: wrap;
   font-size: 0.8rem;
 }
+
 .form > h3 {
   flex-basis: 100%;
   text-align: center;
