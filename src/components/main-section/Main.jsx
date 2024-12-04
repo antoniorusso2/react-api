@@ -72,7 +72,7 @@ function Main() {
 
   function addPost(post) {
     axios
-      .post(`${BASE_URI}posts`, post.json())
+      .post(`${BASE_URI}posts`, post)
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   }
@@ -102,10 +102,13 @@ function Main() {
 
   function deletePost(id) {
     // console.log('elemento eliminato');
-
     setPublishedPosts(publishedPosts.filter((post) => post.id !== id));
     //rimuovo il post dalla lista di post aggiunti
     setAddedList(addedList.filter((post) => post.id !== id));
+    axios
+      .delete(`/${id}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   }
 
   return (
@@ -122,13 +125,6 @@ function Main() {
           <div className="col-12">
             <section className="added_elements_section">
               <div className="add_form">
-                {/* <form onSubmit={(e) => e.preventDefault()} className="form_element">
-                  <input onChange={addNewElement} className={style.input} name="new-title" type="text" placeholder="Inseri
-                  sci il nuovo titolo" value={inputData} />
-                </form> */}
-
-                {/* <Form tags={tags} add={addNewElement} /> */}
-
                 <form onSubmit={addNewElement} className={style.form}>
                   <h3>Aggiungi un nuovo post</h3>
 
@@ -153,18 +149,6 @@ function Main() {
                       <span>Scrivi i tag per l&apos; articolo</span>
                     </label>
                     <input className={style.input} name="tags" type="text" onChange={handleFormData} value={formData.tags} />
-
-                    {/* <label htmlFor="html">Html</label>
-        <input onChange={handleFormData} className={style.input} name="html" type="checkbox" />
-
-        <label htmlFor="css">Css</label>
-        <input onChange={handleFormData} className={style.input} name="css" type="checkbox" />
-
-        <label htmlFor="js">Javascript</label>
-        <input onChange={handleFormData} className={style.input} name="js" type="checkbox" />
-
-        <label htmlFor="php">Php</label>
-        <input onChange={handleFormData} className={style.input} name="php" type="checkbox" /> */}
                   </div>
                   <div className="btn_wrap">
                     <button
