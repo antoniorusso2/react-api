@@ -1,0 +1,17 @@
+.button {
+  line-height: 2.5rem;
+  color: white;
+  background-color: #daa521;
+  padding: 0 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.add_btn {
+  background-color: greenyellow;
+  line-height: 2rem;
+  padding: 0 2rem;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+}

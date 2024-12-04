@@ -1,0 +1,33 @@
+.main {
+  margin-bottom: 5rem;
+  flex-grow: 1;
+}
+
+.title {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.label {
+  margin: 1rem;
+}
+
+.delete_btn {
+  background-color: #978897;
+
+  margin: 1rem;
+  color: rgb(245, 245, 245);
+  width: 100px;
+  border-radius: 0.5rem;
+}
+
+.new_el {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.new_el {
+  flex-basis: 100%;
+}
