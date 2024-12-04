@@ -11,7 +11,7 @@ const defaultFormData = {
 
 export default function Form({ add }) {
   const [formData, setFormData] = useState(defaultFormData);
-  const [tags, setTags] = useState([]);
+  // const [tags, setTags] = useState([]);
 
   function handleFormData(e) {
     console.log('parte il form handler');
@@ -19,12 +19,12 @@ export default function Form({ add }) {
     const key = e.target.name;
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
 
-    const checkbox = e.target;
+    // const checkbox = e.target;
 
     // add tags
-    checkbox.checked ? setTags([...tags, checkbox.name]) : setTags(tags.filter((tag) => tag !== checkbox.name));
+    // checkbox.checked ? setTags([...tags, checkbox.name]) : setTags(tags.filter((tag) => tag !== checkbox.name));
 
-    console.log(tags);
+    // console.log(tags);
 
     const newData = {
       ...formData,
@@ -41,14 +41,14 @@ export default function Form({ add }) {
   }
 
   //controllo presenza tags in base ai checkbox
-  useEffect(
-    () =>
-      setFormData({
-        ...formData,
-        tags: tags,
-      }),
-    [tags],
-  );
+  // useEffect(
+  //   () =>
+  //     setFormData({
+  //       ...formData,
+  //       // tags: tags,
+  //     }),
+  //   [],
+  // );
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className={style.form}>
@@ -72,7 +72,7 @@ export default function Form({ add }) {
 
       <div className={style.tags_checkbox}>
         <label htmlFor="html">Html</label>
-        <input onChange={handleFormData} className={style.input} name="html" type="checkbox" checked={tags.includes('html')} />
+        <input onChange={handleFormData} className={style.input} name="html" type="checkbox" />
 
         <label htmlFor="css">Css</label>
         <input onChange={handleFormData} className={style.input} name="css" type="checkbox" />

@@ -10,22 +10,23 @@ export const BASE_URI = 'http://localhost:3000/';
 function Main() {
   // const [titleInput, setTitleInput] = useState('');
   const [publishedPosts, setPublishedPosts] = useState(posts.filter((post) => post.published));
-
   const [addedList, setAddedList] = useState([]);
 
   //id da inserire ad ogni elemento aggiunto
   let lastId = publishedPosts.length;
 
   //fetch API
-
   function fetchPosts() {
     axios
       .get(`${BASE_URI}posts`)
       .then((res) => {
-        console.log(res.data);
         setPublishedPosts(res.data);
       })
       .catch((err) => console.error(err));
+  }
+
+  function addPost(post) {
+    axios.post(`${BASE_URI}posts`, post);
   }
 
   useEffect(() => {
@@ -39,6 +40,8 @@ function Main() {
 
     setPublishedPosts([...publishedPosts, newElement]);
     setAddedList([...addedList, newElement]);
+
+    addPost(newElement);
   }
 
   function deletePost(id) {

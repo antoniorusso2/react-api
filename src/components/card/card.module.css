@@ -3,6 +3,7 @@
   flex-wrap: wrap;
   max-width: 300px;
   min-width: 200px;
+  /* height: 500px; */
   /* min-width: 200px; */
   margin: 0 auto;
   box-shadow: 0 0 20px 0px rgb(150, 150, 150);
@@ -27,6 +28,7 @@
 
 .card__body > * {
   margin: 0.5rem 0;
+  text-overflow: clip;
 }
 
 .card__title {
