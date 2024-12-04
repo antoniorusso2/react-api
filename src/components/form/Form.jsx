@@ -1,8 +1,5 @@
-/* eslint-disable react/prop-types */
 import style from './Form.module.css';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BASE_URI } from '../main-section/Main';
+import { useState } from 'react';
 
 const defaultFormData = {
   title: '',
@@ -12,7 +9,7 @@ const defaultFormData = {
   tags: '',
 };
 
-export default function Form({ add }) {
+export default function Form() {
   const [formData, setFormData] = useState(defaultFormData);
 
   function handleFormData(e) {
@@ -47,13 +44,6 @@ export default function Form({ add }) {
     setFormData(post);
 
     console.log(formData.tags, post);
-
-    axios
-      .post(`${BASE_URI}posts`, post)
-      .then((res) => console.log(res))
-      .catch((err) => console.error(err));
-
-    setFormData(defaultFormData);
   }
 
   function emptyForm() {
@@ -102,7 +92,7 @@ export default function Form({ add }) {
         <button
           onClick={() => {
             addPost();
-            // emptyForm();
+            emptyForm();
           }}
           className={style.add_btn}
         >

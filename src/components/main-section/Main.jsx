@@ -22,54 +22,22 @@ function Main() {
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState(defaultFormData);
 
+  //--- AXIOS ---
   //fetch API
   function fetchPosts() {
     axios
       .get(`${BASE_URI}posts`)
       .then((res) => {
-        setPosts(res.data);
+        setPosts(res.data); //dati posts da API
       })
       .catch((err) => console.error(err));
   }
 
-  //aggiunta tags
   useEffect(() => {
-    setPublishedPosts(posts.filter((post) => post.published));
+    fetchPosts(); //fetch post al primo montaggio dei componenti
+  }, []);
 
-    const newTags = [];
-
-    posts.forEach((post) => {
-      const postTags = post.tags;
-
-      Array.isArray(postTags) &&
-        postTags.forEach((tag) => {
-          !newTags.includes(tag) && newTags.push(tag);
-        });
-    });
-
-    setTags(newTags);
-  }, [posts]);
-
-  function handleFormData(e) {
-    console.log('parte il form handler');
-
-    const key = e.target.name;
-    console.log(key);
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    console.log(value);
-
-    const newData = {
-      id: Date.now(),
-      ...formData,
-      [key]: value,
-    };
-
-    console.log(formData.tags, e.target);
-    // console.log(tags);
-
-    setFormData(newData);
-  }
-
+  //metodo post per aggiunta post creato tramite form
   function addPost(post) {
     axios
       .post(`${BASE_URI}posts`, post)
@@ -77,9 +45,41 @@ function Main() {
       .catch((err) => console.error(err));
   }
 
+  //aggiunta tags
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    setPublishedPosts(posts.filter((post) => post.published));
+
+    const newTags = []; //array dei tags
+
+    posts.forEach((post) => {
+      const postTags = post.tags;
+
+      //ciclo tags dei dati di base
+      //se è un array push nel mio array di tags
+      Array.isArray(postTags) &&
+        postTags.forEach((tag) => {
+          !newTags.includes(tag) && newTags.push(tag);
+        });
+    });
+
+    setTags(newTags); //variabile di stato per i tags
+  }, [posts]);
+
+  //gestione dati form
+  function handleFormData(e) {
+    console.log('parte il form handler');
+
+    const key = e.target.name; //chiave del nuovo oggetto
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value; // valore nuovo oggetto
+
+    const newData = {
+      id: Date.now(),
+      ...formData,
+      [key]: value, //sostituzione chiave precedente con nuovi valori
+    };
+
+    setFormData(newData); //variabile di stato con i nuovi dati
+  }
 
   function addNewElement(e) {
     console.log('render addNewElement');
@@ -88,16 +88,16 @@ function Main() {
     const post = {
       id: Date.now(),
       ...formData,
-      tags: formData.tags.split(',').map((tag) => tag.trim()),
+      tags: formData.tags.split(',').map((tag) => tag.trim()), //formattazione tags
     };
+
+    //sostituzione valori variabili di stato
     setFormData(post);
     setPosts([...posts, post]);
     setAddedList([...addedList, post]);
 
-    addPost(post);
+    addPost(post); //invio richiesta http per aggiunta nuovo post
     setFormData(defaultFormData);
-
-    console.log(post);
   }
 
   function deletePost(id) {
@@ -105,6 +105,8 @@ function Main() {
     setPublishedPosts(publishedPosts.filter((post) => post.id !== id));
     //rimuovo il post dalla lista di post aggiunti
     setAddedList(addedList.filter((post) => post.id !== id));
+
+    //
     axios
       .delete(`/${id}`)
       .then((res) => console.log(res))
@@ -113,14 +115,16 @@ function Main() {
 
   return (
     <main className={style.main}>
-      <div className="container">
+      {/* title */}
+      <div className="container big_title">
         <div className="row">
           <div className="title col-12">
             <h1 className={`${style.title} col-12`}>Titolo pagina</h1>
           </div>
         </div>
       </div>
-      <div className="container">
+      {/* form */}
+      <div className="container add_elements">
         <section className="row added_elements_section">
           <div className="col-12">
             <div className="add_form">
@@ -177,6 +181,7 @@ function Main() {
           </div>
         </section>
       </div>
+      {/* posts */}
       <div className="container">
         <section className="published_posts">
           <div className="row">
