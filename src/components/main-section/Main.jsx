@@ -1,5 +1,5 @@
 import Card from '../card/Card.jsx';
-import Form from '../form/Form.jsx';
+// import Form from '../form/Form.jsx';
 import style from './main.module.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -121,65 +121,61 @@ function Main() {
         </div>
       </div>
       <div className="container">
-        <div className="row">
+        <section className="row added_elements_section">
           <div className="col-12">
-            <section className="added_elements_section">
-              <div className="add_form">
-                <form onSubmit={addNewElement} className={style.form}>
-                  <h3>Aggiungi un nuovo post</h3>
+            <div className="add_form">
+              <form onSubmit={addNewElement} className={style.form}>
+                <h3>Aggiungi un nuovo post</h3>
 
-                  <input onChange={handleFormData} className={style.input} name="title" type="text" placeholder="Inserisci il nuovo titolo" value={formData.title} />
+                <input onChange={handleFormData} className={style.input} name="title" type="text" placeholder="Inserisci il nuovo titolo" value={formData.title} />
 
-                  <input onChange={handleFormData} className={style.input} name="image" type="text" placeholder="Inserisci un immagine" />
+                <input onChange={handleFormData} className={style.input} name="image" type="text" placeholder="Inserisci un immagine" />
 
-                  <label htmlFor="category">
-                    scegli una categoria:
-                    <select onChange={handleFormData} value={formData.category} className={style.category} name="category">
-                      <option value="frontend">Frontend</option>
-                      <option value="backend">Backend</option>
-                      <option value="news">News</option>
-                      <option value="plans">Plans</option>
-                    </select>
+                <label htmlFor="category">scegli una categoria:</label>
+                <select onChange={handleFormData} value={formData.category} className={style.category} name="category">
+                  <option value="frontend">Frontend</option>
+                  <option value="backend">Backend</option>
+                  <option value="news">News</option>
+                  <option value="plans">Plans</option>
+                </select>
+
+                <textarea className={style.textarea} onChange={handleFormData} name="content" type="text-area" placeholder="Inserisci il contenuto" value={formData.content} />
+
+                <div className={style.tags_checkbox}>
+                  <label onChange={handleFormData} key={Date.now() + 1} htmlFor="tags">
+                    Scrivi i tag per l&apos; articolo
                   </label>
-
-                  <textarea className={style.textarea} onChange={handleFormData} name="content" type="text-area" placeholder="Inserisci il contenuto" value={formData.content} />
-
-                  <div className={style.tags_checkbox}>
-                    <label onChange={handleFormData} key={Date.now() + 1} htmlFor="tags">
-                      <span>Scrivi i tag per l&apos; articolo</span>
-                    </label>
-                    <input className={style.input} name="tags" type="text" onChange={handleFormData} value={formData.tags} />
-                  </div>
-                  <div className="btn_wrap">
-                    <button
-                      onClick={() => {
-                        // addPost();
-                        // emptyForm();
-                      }}
-                      className={style.add_btn}
-                    >
-                      Add
-                    </button>
-                  </div>
-                </form>
-                <ul className={style.added_list}>
-                  {addedList &&
-                    addedList.map((el) => (
-                      <li key={el.id} className={style.new_el}>
-                        <p>
-                          <strong>Hai aggiunto:</strong> {el.title}
-                        </p>
-                        {/* delete */}
-                        <button onClick={() => deletePost(el.id)} className={style.delete_btn}>
-                          Delete
-                        </button>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            </section>
+                  <input className={style.input} name="tags" type="text" onChange={handleFormData} value={formData.tags} />
+                </div>
+                <div className="btn_wrap">
+                  <button
+                    onClick={() => {
+                      // addPost();
+                      // emptyForm();
+                    }}
+                    className={style.add_btn}
+                  >
+                    Add
+                  </button>
+                </div>
+              </form>
+              <ul className={style.added_list}>
+                {addedList &&
+                  addedList.map((el) => (
+                    <li key={el.id} className={style.new_el}>
+                      <p>
+                        <strong>Hai aggiunto:</strong> {el.title}
+                      </p>
+                      {/* delete */}
+                      <button onClick={() => deletePost(el.id)} className={style.delete_btn}>
+                        Delete
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
       <div className="container">
         <section className="published_posts">

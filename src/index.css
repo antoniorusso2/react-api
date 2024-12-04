@@ -52,6 +52,36 @@ section {
   padding: 0 2rem;
 }
 
+form {
+  padding: 0 5rem;
+}
+label {
+  width: 100%;
+  text-align: center;
+}
+input,
+textarea,
+select {
+  display: block;
+  text-align: center;
+  width: 100% !important;
+  background-color: transparent;
+  padding: 0.5rem;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  /* margin-top: 1rem; */
+}
+
+input,
+textarea,
+select:focus {
+  border: 1px solid slateblue;
+}
+
+img {
+  display: block;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
