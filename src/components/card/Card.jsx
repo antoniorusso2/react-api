@@ -3,8 +3,9 @@ import Style from './card.module.css';
 import Btn from '../btn/Card-btn.jsx';
 import placeholder from '../../assets/placeholder.png';
 import { BASE_URI } from '../main-section/Main.jsx';
+import trashBin from '../../assets/trash-bin-minimalistic-svgrepo-com.svg';
 
-function Card({ item }) {
+function Card({ item, bin }) {
   const { title, image, content, tags } = item;
 
   function formatTags(tag) {
@@ -31,7 +32,13 @@ function Card({ item }) {
           ) : null}
 
           <p className={Style.card__text}>{content}</p>
-          <Btn />
+          {/* read more e delete */}
+          <div className={Style.btns_wrap}>
+            <Btn />
+            <i onClick={bin} className={Style.delete_icon}>
+              <img className={Style.bin} src={trashBin} alt="" />
+            </i>
+          </div>
         </div>
       </div>
     </div>

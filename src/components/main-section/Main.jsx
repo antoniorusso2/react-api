@@ -106,9 +106,9 @@ function Main() {
     //rimuovo il post dalla lista di post aggiunti
     setAddedList(addedList.filter((post) => post.id !== id));
 
-    //
+    //delete
     axios
-      .delete(`/${id}`)
+      .delete(`${BASE_URI}posts/${id}`)
       .then((res) => console.log(res))
       .catch((err) => console.error(err));
   }
@@ -186,7 +186,7 @@ function Main() {
         <section className="published_posts">
           <div className="row">
             {publishedPosts.map((post) => {
-              return <Card key={post.id} tags={tags} item={post} />;
+              return <Card key={post.id} tags={tags} item={post} bin={() => deletePost(post.id)} />;
             })}
           </div>
         </section>
